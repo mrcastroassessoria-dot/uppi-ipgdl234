@@ -4,12 +4,6 @@ import { createClient } from '@/lib/supabase/server'
 
 export const dynamic = 'force-dynamic'
 
-webpush.setVapidDetails(
-  `mailto:${process.env.VAPID_EMAIL ?? 'noreply@uppi.app'}`,
-  process.env.VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!,
-)
-
 type BroadcastTarget = 'all_passengers' | 'all_drivers' | 'everyone'
 
 /**
@@ -22,6 +16,13 @@ export async function POST(request: NextRequest) {
     if (!process.env.VAPID_PUBLIC_KEY || !process.env.VAPID_PRIVATE_KEY) {
       return NextResponse.json({ error: 'VAPID nao configurado' }, { status: 500 })
     }
+
+    // Configura o web-push com as chaves VAPID em runtime (nao no nivel do modulo)
+    webpush.setVapidDetails(
+      `mailto:${process.env.VAPID_EMAIL ?? 'noreply@uppi.app'}`,
+      process.env.VAPID_PUBLIC_KEY,
+      process.env.VAPID_PRIVATE_KEY,
+    )
 
     const supabase = await createClient()
 
