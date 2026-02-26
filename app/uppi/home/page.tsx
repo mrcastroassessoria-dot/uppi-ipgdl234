@@ -59,6 +59,7 @@ export default function HomePage() {
     { label: 'Entregas', sub: 'Envie pacotes', icon: 'box', color: 'from-[#e8751a] to-[#d4620f]', href: '/uppi/entregas' },
     { label: 'Intercidade', sub: 'Viaje longe', icon: 'globe', color: 'from-[#0d7377] to-[#14a3a8]', href: '/uppi/cidade-a-cidade' },
     { label: 'Agendar', sub: 'Para depois', icon: 'calendar', color: 'from-[#6c5ce7] to-[#5f3dc4]', href: '/uppi/ride/route-input' },
+    { label: 'Bbzao', sub: 'Novidade', icon: 'zap', color: 'from-[#f7971e] to-[#ffd200]', href: '/uppi/bbzao' },
   ]
 
   const handleLocationFound = useCallback((lat: number, lng: number) => {
