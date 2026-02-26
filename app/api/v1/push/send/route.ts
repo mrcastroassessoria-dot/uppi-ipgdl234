@@ -4,13 +4,6 @@ import { createClient } from '@/lib/supabase/server'
 
 export const dynamic = 'force-dynamic'
 
-// Configura o web-push com as chaves VAPID uma unica vez
-webpush.setVapidDetails(
-  `mailto:${process.env.VAPID_EMAIL ?? 'noreply@uppi.app'}`,
-  process.env.VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!,
-)
-
 /**
  * POST /api/v1/push/send
  * Envia Web Push para todos os dispositivos ativos de um usuario.
@@ -23,6 +16,13 @@ export async function POST(request: NextRequest) {
       console.error('[push/send] VAPID keys nao configuradas')
       return NextResponse.json({ error: 'VAPID nao configurado' }, { status: 500 })
     }
+
+    // Configura o web-push com as chaves VAPID em runtime (nao no nivel do modulo)
+    webpush.setVapidDetails(
+      `mailto:${process.env.VAPID_EMAIL ?? 'noreply@uppi.app'}`,
+      process.env.VAPID_PUBLIC_KEY,
+      process.env.VAPID_PRIVATE_KEY,
+    )
 
     const { user_id, title, body, data } = await request.json()
 
